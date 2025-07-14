@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avinash Kumar | Premium Portfolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.0.0/dist/lenis.min.js"></script>
+    <!-- In your <head> or before closing </body> -->
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+    <style>
+        :root {
+            --primary: #6d28d9;
+            --primary-light: #8b5cf6;
+            --dark-bg: #0d0d0d;
+            --dark-card: #171717;
+            --dark-text: #e5e5e5;
+            --dark-text-secondary: #a3a3a3;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            mix-blend-mode: difference;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.2s ease, width 0.3s ease, height 0.3s ease;
+        }
+        
+        .cursor-hover {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+        }
+        
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .skill-circle {
+            stroke-dasharray: 251;
+            stroke-dashoffset: 251;
+        }
+        
+        .scroll-indicator {
+            width: 3px;
+            height: 100px;
+            background: linear-gradient(to top, var(--primary), transparent);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--primary-light);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .input-field {
+            background-color: var(--dark-card);
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.3);
+        }
+        
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .loading-text {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+        }
+        
+        .loading-bar {
+            width: 200px;
+            height: 3px;
+            background-color: #333;
+            overflow: hidden;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+        }
+        .parallax-bg video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        z-index: -1;
+    }
+    
+    /* Ensure video doesn't show on mobile if performance is concern */
+    @media (max-width: 768px) {
+        .parallax-bg video {
+            display: none;
+        }
+        .parallax-bg {
+            background-image: url('fallback-image.jpg');
+            background-size: cover;
+        }
+    }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-text text-gradient font-bold">AVINASH KUMAR</div>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+    
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-black bg-opacity-80 backdrop-blur-md z-50 py-4 px-8">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-xl font-bold text-gradient">Avinash Kumar</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link text-white hover:text-purple-300 transition">Home</a>
+                <a href="#about" class="nav-link text-white hover:text-purple-300 transition">About</a>
+                <a href="#skills" class="nav-link text-white hover:text-purple-300 transition">Skills</a>
+                <a href="#projects" class="nav-link text-white hover:text-purple-300 transition">Projects</a>
+                <a href="#contact" class="nav-link text-white hover:text-purple-300 transition">Contact</a>
+            </div>
+            <button class="md:hidden text-white">☰</button>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <!-- <div class="absolute inset-0 z-0">
+            <div class="parallax-bg w-full h-full" style="background-image: url('215018.mp4'); filter: brightness(0.3);"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-70"></div>
+        </div> -->
+        <div class="absolute inset-0 z-0 overflow-hidden">
+    <!-- Video element instead of div -->
+    <video 
+        autoplay 
+        muted 
+        loop 
+        playsinline
+        class="parallax-bg w-full h-full object-cover"
+        style="filter: brightness(0.3);"
+    >
+        <source src="215018.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+    <div class="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-70"></div>
+</div>
+        
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h1 class="text-6xl md:text-8xl font-bold mb-6">
+                <span class="text-gradient block">Avinash Kumar</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-gray-300 max-w-2xl mx-auto">
+                Computer Science Engineer | Full Stack Developer | Innovative Problem Solver
+            </p>
+            <div class="flex justify-center space-x-6">
+                <a href="#projects" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-full hover:from-purple-700 hover:to-indigo-700 transition transform hover:scale-105">
+                    View My Work
+                </a>
+                <a href="#contact" class="px-8 py-3 border border-purple-500 text-purple-300 rounded-full hover:bg-purple-900 hover:bg-opacity-30 transition transform hover:scale-105">
+                    Contact Me
+                </a>
+            </div>
+            
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
+                <span class="text-sm text-gray-400 mb-2">Scroll Down</span>
+                <div class="scroll-indicator"></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="py-28 relative overflow-hidden">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-12 md:mb-0 flex justify-center relative">
+                    <div class="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-purple-500 relative z-10">
+                        <img src="Profile Pic.jpg" alt="Avinash Kumar" class="w-full h-full object-cover">
+                    </div>
+                    <div class="absolute -left-10 -top-10 w-64 h-64 border-2 border-purple-300 rounded-full opacity-30"></div>
+                    <div class="absolute -right-10 -bottom-10 w-64 h-64 border-2 border-purple-300 rounded-full opacity-30"></div>
+                </div>
+                <div class="md:w-1/2 md:pl-16">
+                    <h2 class="text-4xl font-bold mb-8 text-gradient inline-block">About Me</h2>
+                    <p class="text-lg mb-6 text-gray-300">
+                        I'm a passionate <span class="text-purple-300">Computer Science Engineering</span> student at IES College of Technology, Bhopal with a current CGPA of 7.4. My journey in tech is driven by a relentless curiosity and desire to build solutions that make an impact.
+                    </p>
+                    <p class="text-lg mb-6 text-gray-300">
+                        With expertise in <span class="text-purple-300">Java, Python, JavaScript</span>, and modern web technologies, I've developed several innovative projects that solve real-world problems, including platforms recognized by MP Police.
+                    </p>
+                    <p class="text-lg mb-8 text-gray-300">
+                        Beyond coding, I'm an <span class="text-purple-300">athletics champion</span> (100m sprint and relay race), creative thinker, and stargazing enthusiast who finds inspiration in both technology and nature.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="Avinash Kumar Resume04.pdf" class="px-6 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition flex items-center">
+                            <span>Download CV</span>
+                            <svg xmlns="Avinash Kumar Resume.pdf" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                                
+                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        <a href="MyStory.html" class="px-6 py-2 border border-purple-500 text-purple-300 rounded-full hover:bg-purple-900 hover:bg-opacity-30 transition flex items-center">
+                            <span>My Story</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Skills Section -->
+    <section id="skills" class="py-28 bg-dark-card">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold mb-16 text-center text-gradient">Technical Skills</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <!-- Languages -->
+                <div class="bg-dark-card p-8 rounded-xl shadow-lg hover:shadow-xl transition card-hover transform hover:-translate-y-2">
+                    <div class="flex justify-center mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4 text-center">Languages</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                            Java
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                            Python
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                            C
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                            HTML/CSS
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                            JavaScript
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Databases -->
+                <div class="bg-dark-card p-8 rounded-xl shadow-lg hover:shadow-xl transition card-hover transform hover:-translate-y-2">
+                    <div class="flex justify-center mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4 text-center">Databases</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                            Oracle
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                            MongoDB
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Frameworks -->
+                <div class="bg-dark-card p-8 rounded-xl shadow-lg hover:shadow-xl transition card-hover transform hover:-translate-y-2">
+                    <div class="flex justify-center mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4 text-center">Frameworks</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                            React.js
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                            Tailwind CSS
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                            Node.js
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Tools -->
+                <div class="bg-dark-card p-8 rounded-xl shadow-lg hover:shadow-xl transition card-hover transform hover:-translate-y-2">
+                    <div class="flex justify-center mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4 text-center">Tools</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                            Git
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                            GitHub
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                            VS Code
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Projects Section -->
+    <section id="projects" class="py-28 relative overflow-hidden">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold mb-16 text-center text-gradient">Featured Projects</h2>
+            
+            <!-- AdChain Project -->
+            <div class="flex flex-col lg:flex-row items-center mb-24">
+                <div class="lg:w-1/2 mb-12 lg:mb-0 relative">
+                    <div class="relative rounded-xl overflow-hidden shadow-2xl transform hover:scale-105 transition duration-500">
+                        <img src="Adchain.jpg" alt="AdChain Project" class="w-full h-auto">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+                        <div class="absolute bottom-0 left-0 p-6">
+                            <h3 class="text-2xl font-bold text-white">AdChain</h3>
+                            <p class="text-purple-300">Ad Influencer Platform</p>
+                        </div>
+                    </div>
+                    <div class="absolute -left-10 -top-10 w-40 h-40 rounded-full bg-purple-500 opacity-10 -z-10"></div>
+                    <div class="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-purple-500 opacity-10 -z-10"></div>
+                </div>
+                <div class="lg:w-1/2 lg:pl-16">
+                    <h3 class="text-3xl font-bold mb-4">AdChain</h3>
+                    <p class="text-xl text-purple-300 mb-6">Ad Influencer Platform for Transparent Brand Collaboration</p>
+                    <p class="text-gray-300 mb-6">
+                        Built a dual-dashboard platform for companies and influencers to post and accept ad campaigns. Implemented real-time ad matching based on influencer categories.
+                    </p>
+                    <div class="flex flex-wrap gap-3 mb-8">
+                        <span class="px-4 py-1 bg-purple-900 bg-opacity-50 text-purple-300 rounded-full">React</span>
+                        <span class="px-4 py-1 bg-purple-900 bg-opacity-50 text-purple-300 rounded-full">Tailwind CSS</span>
+                        <span class="px-4 py-1 bg-purple-900 bg-opacity-50 text-purple-300 rounded-full">Node.js</span>
+                        <span class="px-4 py-1 bg-purple-900 bg-opacity-50 text-purple-300 rounded-full">MongoDB</span>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="https://adchain-omega.vercel.app/" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-full hover:from-purple-700 hover:to-indigo-700 transition flex items-center">
+                            <span>Live Demo</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        <a href="https://github.com/Avir0/adsense_fe.git" class="px-6 py-2 border border-purple-500 text-purple-300 rounded-full hover:bg-purple-900 hover:bg-opacity-30 transition flex items-center">
+                            <span>GitHub Code</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AlertVault Project -->
+            <div class="flex flex-col lg:flex-row-reverse items-center">
+                <div class="lg:w-1/2 mb-12 lg:mb-0 relative">
+                    <div class="relative rounded-xl overflow-hidden shadow-2xl transform hover:scale-105 transition duration-500">
+                        <img src="image.png" alt="AlertVault Project" class="w-full h-auto">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+                        <div class="absolute bottom-0 left-0 p-6">
+                            <h3 class="text-2xl font-bold text-white">AlertVault</h3>
+                            <p class="text-purple-300">Crime Reporting Platform</p>
+                        </div>
+                    </div>
+                    <div class="absolute -left-10 -top-10 w-40 h-40 rounded-full bg-purple-500 opacity-10 -z-10"></div>
+                    <div class="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-purple-500 opacity-10 -z-10"></div>
+                </div>
+                <div class="lg:w-1/2 lg:pr-16">
+                    <h3 class="text-3xl font-bold mb-4">AlertVault</h3>
+                    <p class="text-xl text-purple-300 mb-6">Real-Time Public & Crime Reporting Platform</p>
+                    <p class="text-gray-300 mb-6">
+                        Built a platform for users to report crimes by uploading images, videos, and real-time location. Enabled instant crime alert dispatch to nearby police patrol vehicles using geo-coordinates for faster response.
+                    </p>
+                    <div class="flex flex-wrap gap-3 mb-8">
+                        <span class="px-4 py-1 bg-purple-900 bg-opacity-50 text-purple-300 rounded-full">HTML</span>
+                        <span class="px-4 py-1 bg-purple-900 bg-opacity-50 text-purple-300 rounded-full">CSS</span>
+                        <span class="px-4 py-1 bg-purple-900 bg-opacity-50 text-purple-300 rounded-full">JavaScript</span>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="https://avir0.github.io/Alertvault1/" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-full hover:from-purple-700 hover:to-indigo-700 transition flex items-center">
+                            <span>Live Demo</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        <a href="https://github.com/Avir0/Alertvault1.git
+                        " class="px-6 py-2 border border-purple-500 text-purple-300 rounded-full hover:bg-purple-900 hover:bg-opacity-30 transition flex items-center">
+                            <span>GitHub Code</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="py-28 bg-dark-card relative overflow-hidden">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold mb-16 text-center text-gradient">Get In Touch</h2>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="flex flex-col md:flex-row gap-12">
+                    <div class="md:w-1/2">
+                        <h3 class="text-2xl font-bold mb-6">Let's talk about your project</h3>
+                        <p class="text-gray-300 mb-8">
+                            I'm currently available for freelance work or full-time positions. If you have a project that needs creative solutions or just want to say hi, feel free to reach out!
+                        </p>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-purple-900 bg-opacity-50 flex items-center justify-center mr-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-300" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-400">Email</p>
+                                    <a href="mailto:avinashkumarsinghst@gmail.com" class="text-purple-300 hover:underline">avinashkumarsinghst@gmail.com</a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-purple-900 bg-opacity-50 flex items-center justify-center mr-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-300" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M7 2a2 2 0 00-2 2v12a2 2 0 002 2h6a2 2 0 002-2V4a2 2 0 00-2-2H7zm3 14a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-400">Phone</p>
+                                    <a href="tel:+917903824452" class="text-purple-300 hover:underline">+91 7903824452</a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-purple-900 bg-opacity-50 flex items-center justify-center mr-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-300" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-400">Location</p>
+                                    <p class="text-purple-300">Bhopal, India</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <h4 class="text-lg font-semibold mb-4">Connect with me</h4>
+                            <div class="flex space-x-4">
+                                <a href="https://www.linkedin.com/in/youravinash/" class="w-10 h-10 rounded-full bg-purple-900 bg-opacity-50 flex items-center justify-center hover:bg-purple-800 transition">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-300" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                                    </svg>
+                                </a>
+                                <a href="https://github.com/Avir0" class="w-10 h-10 rounded-full bg-purple-900 bg-opacity-50 flex items-center justify-center hover:bg-purple-800 transition">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-300" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="md:w-1/2">
+                        <form class="space-y-6">
+                            <div>
+                                <label for="name" class="block mb-2 text-gray-300">Your Name</label>
+                                <input type="text" id="name" class="w-full px-4 py-3 rounded-lg input-field focus:outline-none">
+                            </div>
+                            <div>
+                                <label for="email" class="block mb-2 text-gray-300">Your Email</label>
+                                <input type="email" id="email" class="w-full px-4 py-3 rounded-lg input-field focus:outline-none">
+                            </div>
+                            <div>
+                                <label for="message" class="block mb-2 text-gray-300">Your Message</label>
+                                <textarea id="message" rows="5" class="w-full px-4 py-3 rounded-lg input-field focus:outline-none"></textarea>
+                            </div>
+                            <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-full hover:from-purple-700 hover:to-indigo-700 transition transform hover:scale-105">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-8 bg-black bg-opacity-80 text-center">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-center mb-6">
+                <a href="#home" class="text-2xl font-bold text-gradient">Avinash Kumar</a>
+            </div>
+            <div class="flex justify-center space-x-8 mb-6">
+                <a href="#about" class="text-gray-400 hover:text-purple-300 transition">About</a>
+                <a href="#skills" class="text-gray-400 hover:text-purple-300 transition">Skills</a>
+                <a href="#projects" class="text-gray-400 hover:text-purple-300 transition">Projects</a>
+                <a href="#contact" class="text-gray-400 hover:text-purple-300 transition">Contact</a>
+            </div>
+            <p class="text-gray-500 text-sm">
+                © 2024 Avinash Kumar. All rights reserved.
+            </p>
+        </div>
+    </footer>
+    
+    <script>
+        // Initialize Lenis for smooth scrolling
+        const lenis = new Lenis({
+            lerp: 0.1,
+            smooth: true,
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+        
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        
+        requestAnimationFrame(raf);
+        
+        // Custom cursor
+        const cursor = document.querySelector('.custom-cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        
+        document.querySelectorAll('a, button, input, textarea').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('cursor-hover');
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('cursor-hover');
+            });
+        });
+        
+        // Loading animation
+        window.addEventListener('load', () => {
+            const loadingText = document.querySelector('.loading-text');
+            const loadingProgress = document.querySelector('.loading-progress');
+            const loadingScreen = document.querySelector('.loading-screen');
+            
+            gsap.to(loadingText, {
+                opacity: 1,
+                duration: 0.5,
+                ease: 'power2.out'
+            });
+            
+            gsap.to(loadingProgress, {
+                width: '100%',
+                duration: 2,
+                ease: 'power2.inOut',
+                onComplete: () => {
+                    gsap.to(loadingScreen, {
+                        opacity: 0,
+                        duration: 0.5,
+                        ease: 'power2.out',
+                        onComplete: () => {
+                            loadingScreen.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        });
+        
+        // Scroll animations
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Animate sections on scroll
+        gsap.utils.toArray('section').forEach(section => {
+            gsap.from(section, {
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 80%',
+                    toggleActions: 'play none none none'
+                },
+                opacity: 0,
+                y: 50,
+                duration: 1
+            });
+        });
+        
+        // Animate project cards
+        gsap.utils.toArray('.card-hover').forEach(card => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 80%',
+                    toggleActions: 'play none none none'
+                },
+                opacity: 0,
+                y: 50,
+                duration: 0.8,
+                stagger: 0.2
+            });
+        });
+        
+        // Nav link active state
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (pageYOffset >= sectionTop - 300) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
